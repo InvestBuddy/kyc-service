@@ -8,7 +8,7 @@ WORKDIR /app
 COPY kyc-service-0.0.1-SNAPSHOT.jar kyc-service.jar
 
 # Expose port
-EXPOSE 8081
+EXPOSE 8084
 
 # Run the application
 ENTRYPOINT ["java", "-jar", "kyc-service.jar"]
