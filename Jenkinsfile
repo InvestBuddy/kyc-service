@@ -18,7 +18,7 @@ pipeline {
                 // Checkout the code from the repository using the configured Git credentials
                 checkout([$class: 'GitSCM',
                           branches: [[name: 'master']],
-                          userRemoteConfigs: [[url: 'https://github.com/InvestBuddy/kyc-service.git', credentialsId: 'Git']]])
+                          userRemoteConfigs: [[url: 'https://github.com/InvestBuddy/kyc-service.git', credentialsId: 'git']]])
             }
         }
 
