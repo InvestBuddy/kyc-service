@@ -79,9 +79,7 @@ pipeline {
                 script {
                     withKubeConfig([credentialsId: 'kubectl']) {
                         // Ensure kubectl is configured and available in the Jenkins environment
-                        bat """
-                            kubectl apply -f kyc-service-db-deployment.yml
-                            kubectl apply -f kyc-service-db-service.yml
+                        bat """        
                             kubectl apply -f kyc-service-deployment.yml
                             kubectl apply -f kyc-service-service.yml
                         """
