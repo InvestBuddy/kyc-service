@@ -42,13 +42,13 @@ pipeline {
             }
         }
        
-       stage('Build and SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv('SonarQubeServer') {
-                    bat 'mvn sonar:sonar -Dsonar.login=%SONAR_TOKEN%'
-                }
-            }
-        }
+       // stage('Build and SonarQube Analysis') {
+       //      steps {
+       //          withSonarQubeEnv('SonarQubeServer') {
+       //              bat 'mvn sonar:sonar -Dsonar.login=%SONAR_TOKEN%'
+       //          }
+       //      }
+       //  }
 
 
         stage('Build Docker Image') {
@@ -74,19 +74,30 @@ pipeline {
             }
         }
 
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    withKubeConfig([credentialsId: 'kubectl']) {
-                        // Ensure kubectl is configured and available in the Jenkins environment
-                        bat """        
-                            kubectl apply -f kyc-service-deployment.yml
-                            kubectl apply -f kyc-service-service.yml
-                        """
-                    }
-                }
-            }
-        }
+			 stage('Deploy to Kubernetes') {
+			     steps {
+			        script {
+			           // Replace a placeholder in user-service.yml with the build number
+			          if (isUnix()) {
+			             sh "sed -i 's#<BUILD_NUMBER>#${BUILD_NUMBER}#g' kyc-service.yml"
+			           } 
+				   else {
+			                bat "powershell -Command \"(Get-Content kyc-service.yml) -replace '<BUILD_NUMBER>', '${BUILD_NUMBER}' | Set-Content kyc-service.yml\""
+			            }
+			
+			            withKubeConfig([credentialsId: 'kubectl']) {
+			              if (isUnix()) {
+			                sh 'kubectl apply -f kyc-service.yml'
+			             } else {
+			                bat 'kubectl apply -f kyc-service.yml'
+			               }
+			             }
+			          }
+			     }
+			}
+
+
+	    
     }
 
 	post {
