@@ -5,7 +5,7 @@ FROM openjdk:21-jdk
 WORKDIR /app
 
 # Copy the JAR file and rename it to notification.jar
-COPY kyc-service-1.0-SNAPSHOT kyc-service.jar
+COPY target/kyc-service-1.0-SNAPSHOT kyc-service.jar
 
 # Expose port
 EXPOSE 8084
