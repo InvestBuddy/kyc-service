@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kyc-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kyc-service
+  template:
+    metadata:
+      labels:
+        app: kyc-service
+    spec:
+      containers:
+        - name: kyc-service
+          image: abakhar217/kyc-service:kyc-service-<BUILD_NUMBER>
+          ports:
+            - containerPort: 8084
+          env:
+            # PostgreSQL Configuration
+            - name: SPRING_DATASOURCE_URL
+              value: "jdbc:postgresql://kyc-service-db:5432/kyc_db"
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                  secretKeyRef:
+                      name: postgres-secrets
+                      key: POSTGRES_USER
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                  secretKeyRef:
+                     name: postgres-secrets
+                     key: POSTGRES_PASSWORD
+            # Kafka Configuration
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              value: "kafka-deployment:9092"
+            - name: KAFKA_TOPIC
+              value: "user-events" # You can change this based on your application topic
+          # Other env vars can be set below
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kyc-service
+spec:
+  selector:
+    app: kyc-service
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
