@@ -47,12 +47,15 @@ public class KycController {
             // Mettre à jour le statut dans la base de données
             kycService.updateKycStatus(verificationId, verificationStatus);
 
+
+
             // (Optionnel) Traiter d'autres données utiles, comme le risque ou les informations personnelles
             /*Map<String, Object> riskScore = (Map<String, Object>) verification.get("riskScore");
             if (riskScore != null) {
                 Double score = (Double) riskScore.get("score");
                 System.out.println("Risk Score: " + score);
             }*/
+
 
         } catch (Exception e) {
             // Logger et retourner une erreur en cas de problème
