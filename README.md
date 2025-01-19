@@ -1,6 +1,6 @@
 # KYC Service - InvestBuddy AI
 
-The **KYC Service** manages the Know Your Customer (KYC) verification process for users in the **InvestBuddy AI** platform. It ensures regulatory compliance and validates user identities through asynchronous communication via **Kafka**.
+The **KYC Service** manages the Know Your Customer (KYC) verification process for users in the **InvestBuddy AI** platform using **Veriff API**. It ensures regulatory compliance and validates user identities through asynchronous communication via **Kafka**.
 
 ---
 
